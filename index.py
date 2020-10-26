@@ -14,7 +14,7 @@ from scipy.io.wavfile import read, write
 def chiakhung(Fs, data):  # khoang chia 20ms
     dur = len(data) / Fs  # thoi gian tin hieu am thanh
     t = np.arange(0, dur, 0.02)  # chia khoang bien do 20ms
-    E = np.zeros(len(t))  # khoi tao mang E
+    E = np.zeros(len(t),dtype=np.float64)  # khoi tao mang E
     n1 = 0
     # xac dinh tuong doi 1 khoang chia gap bao nhieu thoi gian lay mau ( = 0.02/T)
     x = int(0.02*Fs)
@@ -44,7 +44,7 @@ def GetThreshold(E):
 
 
 # --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('/media/ntl2000/Data/Study/XLTH/Python/BTL/Resources/TinHieuMau/lab_male.wav')
+Fs, data = read('/media/ntl2000/Data/Study/XLTH/Python/BTL/Resources/TinHieuMau/studio_female.wav')
 print(data)
 
 
@@ -55,14 +55,21 @@ E = chiakhung(Fs, data)
 min = min(E)
 max = max(E)
 Normalized1(E, min, max)
+
+
+# for i in range(0,len(E)):
+#     if E[i] == 0:
+#         print(i)
+
 # --------------------
+
 # Tim nguong
-# E1 = []  # khoi tao mang E
-# for i in range(0, len(E)):
-#     if E[i] <= GetThreshold(E):
-#         E1.append(0)
-#     else:
-#         E1.append(E[i])
+    # E1 = []  # khoi tao mang E
+    # for i in range(0, len(E)):
+    #     if E[i] <= GetThreshold(E):
+    #         E1.append(0)
+    #     else:
+    #         E1.append(E[i])
 
 
 plt.figure()
