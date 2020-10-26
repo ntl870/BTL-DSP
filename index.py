@@ -28,11 +28,13 @@ def chiakhung(Fs, data):  # khoang chia 20ms
     return E
 
 
-def Normalized1(energy, min, max):  # Normalize method 1
-    return (energy-min)/(max-min)
-    
+def Normalized1(energy,min,max):  # Normalize method 1
+    for i in range(0,len(energy)):               #For loop to normalize LIST energy
+        energy[i] = (energy[i]-min)/(max-min)
 
 
+
+ 
 
 
 
@@ -42,13 +44,12 @@ print(data)
 arrayX = []
 
 E = chiakhung(Fs, data)
-min = min(E)        #Get min
-max = max(E)        #Get max
 
-
-for i in range(0,len(E)):               #For loop to normalize LIST E
-    E[i] = Normalized1(E[i],min,max)    
-   
+#------Normalize E---------
+min = min(E)
+max = max(E)
+Normalized1(E,min,max)
+#--------------------
 
 print(E)
 plt.figure()
