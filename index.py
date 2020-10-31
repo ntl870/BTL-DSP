@@ -91,7 +91,7 @@ realEdges = []
 
 # Tim cac bien do bo vao mang realEdge
 for i in range(0,len(GetEdge(E))):
-    realEdges.append(GetEdge(E)[i]/0.02)
+    realEdges.append(GetEdge(E)[i]*int(0.02*Fs))
 print(realEdges)
 #-------------------------------------
 
