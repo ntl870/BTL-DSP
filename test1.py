@@ -1,16 +1,16 @@
-# ---------------------------------------BAI TAP NHOM --------------------------------------------------
+# # ---------------------------------------BAI TAP NHOM --------------------------------------------------
 
-# '/media/ntl2000/Data/Study/XLTH/Python/BTL/Resources/TinHieuMau/lab_female.wav'
-#  'D:\Study\XLTH\Python\BTL\Resources\TinHieuMau\lab_female.wav'
+# # '/media/ntl2000/Data/Study/XLTH/Python/BTL/Resources/TinHieuMau/lab_female.wav'
+# #  'D:\Study\XLTH\Python\BTL\Resources\TinHieuMau\lab_female.wav'
 
-# -------------------------------------LIBRARY-----------------------------------------------------
+# # -------------------------------------LIBRARY-----------------------------------------------------
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io.wavfile import read, write
 import copy
 
-# ----------------------------------------------FUNCTION-------------------------------------------
-# chuyen audio sang tan so lay mau Fs2
+# # ----------------------------------------------FUNCTION-------------------------------------------
+# # chuyen audio sang tan so lay mau Fs2
 
 
 def chiakhung(Fs, data):  # khoang chia 20ms
@@ -52,51 +52,44 @@ def GetEdge(E):         # Get the edges
     voiced = np.zeros(len(E), dtype=np.float64)
     unvoiced = np.zeros(len(E), dtype=np.float64)
     res = []
-    for i in range(0, len(E)-1):
-        if(E[i] > 0.01):
-            voiced[i] = 1
-        else:
+    for i in range(0, len(E)):
+        if(E[i] == 0):
             unvoiced[i] = 1
+        else:
+            voiced[i] = 1
 
     for i in range(1, len(E)-1):
         if voiced[i] == unvoiced[i-1]:
-            res.append(i-1)
+            res.append(i)
     return res
 
 
-# --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('/media/ntl2000/Data/Study/XLTH/Python/BTL/Resources/TinHieuMau/lab_female.wav')
+# # --------------------------------------------------MAIN------------------------------------------------------
+Fs, data = read('D:\\Study\\XLTH\Python\\BTL-DSP\\Resources\\TinHieuMau\\LA025.wav')
 
-mindata = min(data)
-maxdata = max(data)
+avg = 0
+for i in range(len(data)):
+    avg += abs(data[i]/len(data))
 
-E = chiakhung(Fs, data)
+altdata = np.zeros(len(data))
+for i in range(len(data)):
+    altdata[i] = data[i] - avg
+
+
+
+
+# E = chiakhung(Fs, data)
 
 # ------Normalize E---------
 
 
-E = Normalized1(E, min(E), max(E))
+# E = Normalized1(E, min(E), max(E))
 
 
  # khoi tao mang E
-x = np.zeros(len(E), dtype=np.float64)
+# x = np.zeros(len(E), dtype=np.float64)
 
 
-arrayX = np.linspace(0, len(E), len(E))
-
-data1 = Normalized1(data,min(data),max(data))
-plt.figure()
-
-plt.subplot(2,1,1)
-plt.plot(data, color="r")
-
-realEdges = []
-
-
-# Tim cac bien do bo vao mang realEdge
-for i in range(0,len(GetEdge(E))):
-    realEdges.append(GetEdge(E)[i]*int(0.02*Fs))
-#-------------------------------------
 
 
 
@@ -107,9 +100,11 @@ def calZCRperFrame(data,size):
     else:
      count = 0
      for i in range(0,size):
-        if(data[i]*data[i+1] < 0):
+        if(data[i-1]*data[i] < 0):
             count += 1
      return count
+
+
 
 
 def calZCRallFrames(data):
@@ -122,17 +117,49 @@ def calZCRallFrames(data):
         temp = temp + int(0.02*Fs)
     return zcr
 
-zcr = calZCRallFrames(data)
+
+zcr = calZCRallFrames(altdata)
 
 zcr = Normalized1(zcr,min(zcr),max(zcr))
 
 
-lenData = []
-for i in range(0,len(data)):
-    lenData.append(i)
+realEdges = []
 
-plt.subplot(2,1,2)
-plt.plot(zcr)
+
+# Tim cac bien do bo vao mang realEdge
+for i in range(0,len(GetEdge(zcr))):
+    realEdges.append(GetEdge(zcr)[i]*int(0.02*Fs))
+#-------------------------------------
+
+
+print(zcr)
+print("                     ")
+print("                     ")
+print("                     ")
+print("                     ")
+print("                     ")
+print("                     ")
+print("                     ")
+
+print(realEdges)
+
+plt.figure()
+
+# plt.subplot(3,1,1)
+# plt.plot(E, color="r")
+
+
+# plt.subplot(3,1,2)
+# plt.plot(zcr)
+
+arrayX = []
+
+for i in range(0,len(data)):
+    arrayX.append(i)
+
+# plt.subplot(3,1,3)
+plt.plot(arrayX,data, color="r")
+plt.vlines(realEdges,-max(data),max(data))
 
 
 plt.xlabel('sample index')
