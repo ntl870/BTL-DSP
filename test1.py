@@ -37,43 +37,42 @@ def Normalized1(energy, min, max):
     return res
 
 
-
-def GetThreshold(E):    #Get Threshold of E
-    E1 = np.sort(E)
-    max = maxl = 0
-    for i in range(len(E1)-1):
-        if (E1[i+1]-E1[i]) > max:
-            max = E1[i+1]-E1[i]
-            maxl = E1[i]
-    return maxl
-
-
 def GetEdge(E):         # Get the edges
     voiced = np.zeros(len(E), dtype=np.float64)
     unvoiced = np.zeros(len(E), dtype=np.float64)
     res = []
-    for i in range(0, len(E)):
-        if(E[i] == 0):
+    for i in range(0, len(E)-1):
+        if(E[i] == 0.0):
             unvoiced[i] = 1
         else:
             voiced[i] = 1
 
     for i in range(1, len(E)-1):
         if voiced[i] == unvoiced[i-1]:
-            res.append(i)
+            res.append(i-1)
     return res
 
 
 # # --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('D:\\Study\\XLTH\Python\\BTL-DSP\\Resources\\TinHieuMau\\LA025.wav')
+Fs, data = read('D:\\Study\\XLTH\Python\\BTL-DSP\\Resources\\TinHieuMau\\studio_male.wav')
+
+
+normalizedData = []
+
+for i in range(0,len(data)):
+    normalizedData.append(Normalized1(data,min(data),max(data)))
+
+
 
 avg = 0
-for i in range(len(data)):
-    avg += abs(data[i]/len(data))
+for i in range(len(normalizedData)):
+    avg += abs(normalizedData[i]/len(normalizedData))
 
-altdata = np.zeros(len(data))
-for i in range(len(data)):
-    altdata[i] = data[i] - avg
+altdata = np.zeros(len(normalizedData))
+for i in range(len(normalizedData)):
+    altdata[i] = normalizedData[i] - avg
+
+
 
 
 
@@ -149,15 +148,16 @@ plt.figure()
 # plt.plot(E, color="r")
 
 
-# plt.subplot(3,1,2)
-# plt.plot(zcr)
+plt.subplot(2,1,1)
+plt.plot(zcr,color="r")
+plt.vlines(GetEdge(zcr),-1,1)
 
 arrayX = []
 
 for i in range(0,len(data)):
     arrayX.append(i)
 
-# plt.subplot(3,1,3)
+plt.subplot(2,1,2)
 plt.plot(arrayX,data, color="r")
 plt.vlines(realEdges,-max(data),max(data))
 

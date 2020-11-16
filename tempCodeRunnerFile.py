@@ -1,1 +1,2 @@
-plt.subplot(2, 1, 1)
+
+# zcr = Normalized1(zcr,min(zcr),max(zcr))
