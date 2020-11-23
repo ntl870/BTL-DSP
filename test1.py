@@ -99,7 +99,7 @@ def GetEdgeZCR(E):         # Get the edge
     u = 0
     while(u < len(res)):
         temp = res[u]
-        for k in range(1,15):
+        for k in range(1,13):
             if temp + k in res:
                 res.remove(temp + k)
         u += 1
@@ -123,7 +123,7 @@ def GetEdgeMA(E):         # Get the edge
     return res
 
 # # --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('./Resources/TinHieuMau/LA001.wav')
+Fs, data = read('./Resources/TinHieuMau/studio_male.wav')
 
 
 avg = 0
@@ -188,17 +188,17 @@ MA = Normalized1(MA,min(MA),max(MA))
 
 
 # Tim cac bien do bo vao mang realEdge
-for i in range(0, len(GetEdgeMA(MA))):
-    realEdges.append(GetEdgeMA(MA)[i]*int(0.02*Fs))
+for i in range(0, len(GetEdgeZCR(zcr))):
+    realEdges.append(GetEdgeZCR(zcr)[i]*int(0.02*Fs))
 # -------------------------------------
-print(GetEdgeMA(MA))
+print(GetEdgeZCR(zcr))
 
 plt.figure()
 
 
 plt.subplot(2, 1, 1)
-plt.plot(MA, color="r")
-plt.vlines(GetEdgeMA(MA), 0, 1)
+plt.plot(zcr, color="r")
+plt.vlines(GetEdgeZCR(zcr), 0, 1)
 
 arrayX = []
 
