@@ -20,8 +20,15 @@ def dau(x):
     if (x < 0):
         return -1
 
+def Normalize(energy, min, max):
+    res = []
+    for i in range(0, len(energy)):
+        res.append((energy[i]-min)/(max-min))
+    return res
 
-def chiakhung(Fs, data):  # khoang chia 20ms
+
+
+def CalculateSTE(Fs, data):  # khoang chia 20ms
     dur = len(data) / Fs  # thoi gian tin hieu am thanh
     t = np.arange(0, dur, 0.02)  # chia khoang bien do 20ms
     E = np.zeros(len(t))  # khoi tao mang E
@@ -38,14 +45,7 @@ def chiakhung(Fs, data):  # khoang chia 20ms
     return E
 
 
-def Normalized1(energy, min, max):
-    res = []
-    for i in range(0, len(energy)):
-        res.append((energy[i]-min)/(max-min))
-    return res
-
-
-def ZCRframe(Fs, data):  # khoang chia 20ms
+def CalculateZCR(Fs, data):  # khoang chia 20ms
     dur = len(data) / Fs  # thoi gian tin hieu am thanh
     t = np.arange(0, dur, 0.02)  # chia khoang bien do 20ms
     ZCR = np.zeros(len(t), dtype=np.float64)  # khoi tao mang ZCR
@@ -157,7 +157,7 @@ def GetEdges(E):         # Get the edge
 
 
 # # --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('./Resources/TinHieuMau/LA025.wav')
+Fs, data = read('./Resources/TinHieuMau/lab_male.wav')
 
 
 avg = 0
@@ -169,8 +169,8 @@ for i in range(len(data)):
     altdata[i] = data[i] - avg
 
 
-E = chiakhung(Fs, data)
-E = Normalized1(E, min(E), max(E))
+E = CalculateSTE(Fs, data)
+E = Normalize(E, min(E), max(E))
 altE = np.zeros(len(E))
 for i in range(0,len(E)):
     if E[i] <= 0.01:
@@ -180,15 +180,15 @@ for i in range(0,len(E)):
 
 
 
-zcr = ZCRframe(Fs,altdata)
-zcr = Normalized1(zcr, min(zcr), max(zcr))
+zcr = CalculateZCR(Fs,altdata)
+zcr = Normalize(zcr, min(zcr), max(zcr))
 
 
 
 
 
 MA = CalculateMA(Fs, data)
-MA = Normalized1(MA, min(MA), max(MA))
+MA = Normalize(MA, min(MA), max(MA))
 altMA = np.zeros(len(MA))
 for i in range(0,len(MA)):
     if MA[i] <= 0.1:
