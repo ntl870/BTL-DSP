@@ -1,2 +1,4 @@
 
-# zcr = Normalized1(zcr,min(zcr),max(zcr))
+                res.remove(temp + 13)
+            if (temp + 14) in res:
+                res.remove(temp + 14)
