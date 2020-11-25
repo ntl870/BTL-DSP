@@ -114,7 +114,7 @@ def GetEdges(E):         # Get the edge
 
 
 # # --------------------------------------------------MAIN------------------------------------------------------
-Fs, data = read('./Resources/TinHieuMau/LA025.wav')
+Fs, data = read('./Resources/TinHieuMau/studio_female.wav')
 
 
 avg = 0
@@ -170,33 +170,47 @@ print(GetEdges(altE))
 plt.figure()
 
 
-
-plt.subplot(2, 3, 1)
-plt.plot(MA, color="r")
-plt.title("MA")
-plt.vlines(GetEdges(altMA), 0, 1)
-plt.subplot(2, 3, 4)
-plt.title("Data MA")
-plt.plot(data, color="r")
-plt.vlines(realEdgesMA, -max(data), max(data))
-
-plt.subplot(2, 3, 2)
-plt.plot(E, color="r")
-plt.title("E")
-plt.vlines(GetEdges(altE), 0, 1)
-plt.subplot(2, 3, 5)
-plt.title("Data STE")
-plt.plot(data, color="r")
-plt.vlines(realEdgesE, -max(data), max(data))
-
-plt.subplot(2, 3, 3)
+plt.subplot(2, 1, 1)
 plt.plot(zcr, color="r")
 plt.title("ZCR")
 plt.vlines(GetEdges(zcr), 0, 1)
-plt.subplot(2, 3, 6)
-plt.title("Data ZCR")
+plt.subplot(2, 1, 2)
+plt.title("File studio_female")
 plt.plot(data, color="r")
 plt.vlines(realEdgesZCR, -max(data), max(data))
+
+
+
+
+
+
+
+# plt.subplot(2, 3, 1)
+# plt.plot(MA, color="r")
+# plt.title("MA")
+# plt.vlines(GetEdges(altMA), 0, 1)
+# plt.subplot(2, 3, 4)
+# plt.title("Data MA")
+# plt.plot(data, color="r")
+# plt.vlines(realEdgesMA, -max(data), max(data))
+
+# plt.subplot(2, 3, 2)
+# plt.plot(E, color="r")
+# plt.title("E")
+# plt.vlines(GetEdges(altE), 0, 1)
+# plt.subplot(2, 3, 5)
+# plt.title("Data STE")
+# plt.plot(data, color="r")
+# plt.vlines(realEdgesE, -max(data), max(data))
+
+# plt.subplot(2, 3, 3)
+# plt.plot(zcr, color="r")
+# plt.title("ZCR")
+# plt.vlines(GetEdges(zcr), 0, 1)
+# plt.subplot(2, 3, 6)
+# plt.title("Data ZCR")
+# plt.plot(data, color="r")
+# plt.vlines(realEdgesZCR, -max(data), max(data))
 
 
 plt.show()
