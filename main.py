@@ -187,47 +187,37 @@ EdgesE_ZCR = GetEdgesE_ZCR(E, zcr)
 # Hiển thị đồ thị
 plt.figure()
 
-# # Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
-# plt.subplot(2, 3, 1)
-# plt.plot(MA, color="r")
-# plt.title("MA")
-# plt.vlines(EdgesMA, 0, 1)
-# plt.subplot(2, 3, 4)
-# plt.title("Data (MA)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
+# Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
+plt.subplot(2, 3, 1)
+plt.plot(MA, color="r")
+plt.title("MA")
+plt.vlines(EdgesMA, 0, 1)
+plt.subplot(2, 3, 4)
+plt.title("Data (MA)")
+plt.plot(data, color="r")
+plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
 
-# # Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
-# plt.subplot(2, 3, 2)
-# plt.plot(E, color="r")
-# plt.title("E")
-# plt.vlines(EdgesE, 0, 1)
-# plt.subplot(2, 3, 5)
-# plt.title("Data (STE)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
+# Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
+plt.subplot(2, 3, 2)
+plt.plot(E, color="r")
+plt.title("E")
+plt.vlines(EdgesE, 0, 1)
+plt.subplot(2, 3, 5)
+plt.title("Data (STE)")
+plt.plot(data, color="r")
+plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
 
-# # Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
-# plt.subplot(2, 3, 3)
-# plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
-# plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
-# plt.title("STE + ZCR")
-# plt.vlines(EdgesE_ZCR, 0, 1)
-# plt.subplot(2, 3, 6)
-# plt.title("Data (ZCR+STE)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
-
-
-plt.subplot(2, 1, 1)
+# Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
+plt.subplot(2, 3, 3)
 plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
 plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
 plt.title("STE + ZCR")
 plt.vlines(EdgesE_ZCR, 0, 1)
-plt.subplot(2, 1, 2)
-plt.title("File LA001")
+plt.subplot(2, 3, 6)
+plt.title("Data (ZCR+STE)")
 plt.plot(data, color="r")
 plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
+
 
 
 plt.show()
