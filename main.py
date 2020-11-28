@@ -1,8 +1,10 @@
-#-------------------------------------LIBRARY-----------------------------------------------------
+# -------------------------------------LIBRARY-----------------------------------------------------
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io.wavfile import read
 # # ----------------------------------------------FUNCTION-------------------------------------------
+
+
 def Normalize(data, min, max):  # Chuẩn hóa data về 0,1
     res = []    # Tạo LIST res rỗng để chứa kết quả
     for i in range(0, len(data)):   # Cho i chạy hết qua data
@@ -67,11 +69,12 @@ def CalculateMA(Fs, data):
 
 
 # Hàm tìm biên của các phương pháp dùng ngưỡng
-def GetEdges(data, threshold): # Hàm tìm biên tham số vào là data và ngưỡng đã khảo sát
+def GetEdges(data, threshold):  # Hàm tìm biên tham số vào là data và ngưỡng đã khảo sát
 
-    altData = np.zeros(len(data)) # tạo mảng altData toàn giá trị 0 với độ dài bằng độ dài data
-    for i in range(0, len(data)): # Cho biên i duyệt qua hết data
-        if data[i] <= threshold: # Nếu biên độ tại i nhỏ hơn ngưỡng ta đặt biên độ tại đó bằng 0
+    # tạo mảng altData toàn giá trị 0 với độ dài bằng độ dài data
+    altData = np.zeros(len(data))
+    for i in range(0, len(data)):  # Cho biên i duyệt qua hết data
+        if data[i] <= threshold:  # Nếu biên độ tại i nhỏ hơn ngưỡng ta đặt biên độ tại đó bằng 0
             altData[i] = 0
         else:   # Nếu không trả lại giá trị nguyên vẹn
             altData[i] = data[i]
@@ -115,43 +118,51 @@ def GetEdges(data, threshold): # Hàm tìm biên tham số vào là data và ng�
     return res
 
 # hàm tìm biên của phương pháp kết hợp STE và ZCR
-def GetEdgesE_ZCR(E, ZCR):
-    res = [] # Tạo mảng rỗng để đánh dấu biên
-    check = True #Khai báo biến kiểm tra
-    for i in range(1, len(E)): # Duyệt E
-        if (E[i] > zcr[i] and E[i-1] < zcr[i-1]): #Nếu thỏa mãn điều kiện là biên trái
-            for k in range(1, 10): #kiểm tra 10 mẫu tiếp theo
-              if(i + k < len(E)): #Để đảm bảo i+k không bị vượt quá độ dài của E
-                if (E[i + k] < zcr[i+k]):# Nếu có bất kì phần tử nào không thỏa mãn trong 10 mẫu, check = false và dừng kiểm tra
-                    check = False 
-                    break
-            if (check):# Nếu toàn bộ 10 phần tử đều thỏa mãn, đánh dấu lại vị trí của nó, cho vào LIST res
-                res.append(i)
-            check = True # Trả lại giá trị True cho biến kiểm tra và tiếp tục duyệt
 
-        elif (E[i - 1] > zcr[i-1] and E[i] < zcr[i]): #Nếu điều kiện thỏa mãn là biên phải
-            for k in range(1, 10):#kiểm tra 10 mẫu tiếp theo
-                if(i + k < len(E)): #Để đảm bảo i+k không bị vượt quá độ dài của E
-                    if (E[i + k] > zcr[i+k]):# Nếu có bất kì phần tử nào không thỏa mãn trong 10 mẫu, check = false và dừng kiểm tra
+
+def GetEdgesE_ZCR(E, ZCR):
+    res = []  # Tạo mảng rỗng để đánh dấu biên
+    check = True  # Khai báo biến kiểm tra
+    for i in range(1, len(E)):  # Duyệt E
+        if (E[i] > zcr[i] and E[i-1] < zcr[i-1]):  # Nếu thỏa mãn điều kiện là biên trái
+            for k in range(1, 10):  # kiểm tra 10 mẫu tiếp theo
+                if(i + k < len(E)):  # Để đảm bảo i+k không bị vượt quá độ dài của E
+                    # Nếu có bất kì phần tử nào không thỏa mãn trong 10 mẫu, check = false và dừng kiểm tra
+                    if (E[i + k] < zcr[i+k]):
                         check = False
                         break
-            if (check):# Nếu toàn bộ 10 phần tử đều thỏa mãn, đánh dấu lại vị trí của nó, cho vào LIST res
+            if (check):  # Nếu toàn bộ 10 phần tử đều thỏa mãn, đánh dấu lại vị trí của nó, cho vào LIST res
                 res.append(i)
-            check = True# Trả lại giá trị True cho biến kiểm tra và tiếp tục duyệt
+            check = True  # Trả lại giá trị True cho biến kiểm tra và tiếp tục duyệt
+
+        elif (E[i - 1] > zcr[i-1] and E[i] < zcr[i]):  # Nếu điều kiện thỏa mãn là biên phải
+            for k in range(1, 10):  # kiểm tra 10 mẫu tiếp theo
+                if(i + k < len(E)):  # Để đảm bảo i+k không bị vượt quá độ dài của E
+                    # Nếu có bất kì phần tử nào không thỏa mãn trong 10 mẫu, check = false và dừng kiểm tra
+                    if (E[i + k] > zcr[i+k]):
+                        check = False
+                        break
+            if (check):  # Nếu toàn bộ 10 phần tử đều thỏa mãn, đánh dấu lại vị trí của nó, cho vào LIST res
+                res.append(i)
+            check = True  # Trả lại giá trị True cho biến kiểm tra và tiếp tục duyệt
 
     return res
 
 # hàm tìm biên thực trên data
-def GetRealEdges(edges, Fs):#Input là 2 tham số gồm LIST biên được xác định trên biểu đồ của các phương pháp, và tần số lấy mẫu Fs
-    res = [] #Khởi tạo mảng để lưu các biên trên data
-    for i in range(len(edges)): #Duyệt các phần tử trong edges
-        res.append(edges[i]*int(0.02*Fs)) #Theo định nghĩa của tần số lấy mẫu với độ dài mỗi khung = 0.02
+
+
+# Input là 2 tham số gồm LIST biên được xác định trên biểu đồ của các phương pháp, và tần số lấy mẫu Fs
+def GetRealEdges(edges, Fs):
+    res = []  # Khởi tạo mảng để lưu các biên trên data
+    for i in range(len(edges)):  # Duyệt các phần tử trong edges
+        # Theo định nghĩa của tần số lấy mẫu với độ dài mỗi khung = 0.02
+        res.append(edges[i]*int(0.02*Fs))
     return res
 
 
 # # --------------------------------------------------MAIN------------------------------------------------------
 # đọc file bằng hàm read của scipy
-Fs, data = read('./Resources/TinHieuMau/lab_male.wav')
+Fs, data = read('./Resources/TinHieuMau/LA025.wav')
 # tính năng lượng ngắn hạn STE
 E = CalculateSTE(Fs, data)
 # chuẩn hóa STE
@@ -176,34 +187,45 @@ EdgesE_ZCR = GetEdgesE_ZCR(E, zcr)
 # Hiển thị đồ thị
 plt.figure()
 
-# Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
-plt.subplot(2, 3, 1)
-plt.plot(MA, color="r")
-plt.title("MA")
-plt.vlines(EdgesMA, 0, 1)
-plt.subplot(2, 3, 4)
-plt.title("Data (MA)")
-plt.plot(data, color="r")
-plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
+# # Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
+# plt.subplot(2, 3, 1)
+# plt.plot(MA, color="r")
+# plt.title("MA")
+# plt.vlines(EdgesMA, 0, 1)
+# plt.subplot(2, 3, 4)
+# plt.title("Data (MA)")
+# plt.plot(data, color="r")
+# plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
 
-# Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
-plt.subplot(2, 3, 2)
-plt.plot(E, color="r")
-plt.title("E")
-plt.vlines(EdgesE, 0, 1)
-plt.subplot(2, 3, 5)
-plt.title("Data (STE)")
-plt.plot(data, color="r")
-plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
+# # Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
+# plt.subplot(2, 3, 2)
+# plt.plot(E, color="r")
+# plt.title("E")
+# plt.vlines(EdgesE, 0, 1)
+# plt.subplot(2, 3, 5)
+# plt.title("Data (STE)")
+# plt.plot(data, color="r")
+# plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
 
-# Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
-plt.subplot(2, 3, 3)
-plt.plot(zcr, color="r") # đồ thị ZCR có màu đỏ
-plt.plot(E, color="g") # đồ thị của STE có màu xanh lá cây
+# # Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
+# plt.subplot(2, 3, 3)
+# plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
+# plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
+# plt.title("STE + ZCR")
+# plt.vlines(EdgesE_ZCR, 0, 1)
+# plt.subplot(2, 3, 6)
+# plt.title("Data (ZCR+STE)")
+# plt.plot(data, color="r")
+# plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
+
+
+plt.subplot(2, 1, 1)
+plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
+plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
 plt.title("STE + ZCR")
 plt.vlines(EdgesE_ZCR, 0, 1)
-plt.subplot(2, 3, 6)
-plt.title("Data (ZCR+STE)")
+plt.subplot(2, 1, 2)
+plt.title("File LA025")
 plt.plot(data, color="r")
 plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
 
