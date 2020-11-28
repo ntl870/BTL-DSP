@@ -162,7 +162,7 @@ def GetRealEdges(edges, Fs):
 
 # # --------------------------------------------------MAIN------------------------------------------------------
 # đọc file bằng hàm read của scipy
-Fs, data = read('./Resources/TinHieuMau/LA025.wav')
+Fs, data = read('./Resources/TinHieuMau/LA001.wav')
 # tính năng lượng ngắn hạn STE
 E = CalculateSTE(Fs, data)
 # chuẩn hóa STE
@@ -225,8 +225,9 @@ plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
 plt.title("STE + ZCR")
 plt.vlines(EdgesE_ZCR, 0, 1)
 plt.subplot(2, 1, 2)
-plt.title("File LA025")
+plt.title("File LA001")
 plt.plot(data, color="r")
 plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
+
 
 plt.show()
