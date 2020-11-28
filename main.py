@@ -1,12 +1,7 @@
-# # ---------------------------------------BAI TAP NHOM --------------------------------------------------
-
-
-# # -------------------------------------LIBRARY-----------------------------------------------------
+#-------------------------------------LIBRARY-----------------------------------------------------
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.io.wavfile import read, write
-
-
+from scipy.io.wavfile import read
 # # ----------------------------------------------FUNCTION-------------------------------------------
 def Normalize(data, min, max):  # Chuẩn hóa data về 0,1
     res = []    # Tạo LIST res rỗng để chứa kết quả
