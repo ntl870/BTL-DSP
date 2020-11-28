@@ -50,7 +50,7 @@ def CalculateZCR(Fs, data): # Hàm tính ZCR
     return ZCR  # Trả lại ZCR cho hàm
 
 
-def CalculateMA(Fs, data):
+def CalculateMA(Fs, data): #Hàm tính MA
     dur = len(data) / Fs  # Độ dài của tín hiệu âm thanh
     t = np.arange(0, dur, 0.02)  # Chia khoảng 0.02s bằng hàm arange của numpy
     # Tạo mảng MA toàn 0 với độ dài của t với hàm zeros của numpy với kiểu dữ liệu là float64
