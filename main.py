@@ -12,7 +12,7 @@ def Normalize(data, min, max):  # Chuẩn hóa data về 0,1
     return res  # Trả về LIST res cho hàm
 
 
-def CalculateSTE(Fs, data):
+def CalculateSTE(Fs, data): # Hàm tính STE
     dur = len(data) / Fs  # Độ dài của tín hiệu âm thanh
     t = np.arange(0, dur, 0.02)  # Chia khoảng 0.02s bằng hàm arange của numpy
     # Tạo mảng E toàn 0 với độ dài của t với hàm zeros của numpy với kiểu dữ liệu là float64
@@ -30,7 +30,7 @@ def CalculateSTE(Fs, data):
     return E    # Trả lại E cho hàm
 
 
-def CalculateZCR(Fs, data):
+def CalculateZCR(Fs, data): # Hàm tính ZCR
     dur = len(data) / Fs   # Độ dài của tín hiệu âm thanh
     t = np.arange(0, dur, 0.02)  # Chia khoảng 0.02s bằng hàm arange của numpy
     # Tạo mảng ZCR toàn 0 với độ dài của t với hàm zeros của numpy với kiểu dữ liệu là float64
@@ -145,7 +145,6 @@ def GetEdgesE_ZCR(E, ZCR):
             if (check):  # Nếu toàn bộ 10 phần tử đều thỏa mãn, đánh dấu lại vị trí của nó, cho vào LIST res
                 res.append(i)
             check = True  # Trả lại giá trị True cho biến kiểm tra và tiếp tục duyệt
-
     return res
 
 # hàm tìm biên thực trên data
@@ -162,7 +161,7 @@ def GetRealEdges(edges, Fs):
 
 # # --------------------------------------------------MAIN------------------------------------------------------
 # đọc file bằng hàm read của scipy
-Fs, data = read('./Resources/TinHieuMau/LA001.wav')
+Fs, data = read('./Resources/TinHieuMau/studio_male.wav')
 # tính năng lượng ngắn hạn STE
 E = CalculateSTE(Fs, data)
 # chuẩn hóa STE
@@ -182,6 +181,27 @@ EdgesE = GetEdges(E, 0.02)
 EdgesMA = GetEdges(MA, 0.1)
 # tìm biên của phương pháp dùng STE và ZCR
 EdgesE_ZCR = GetEdgesE_ZCR(E, zcr)
+
+# Đây là block code để chuyển các biên về đơn vị giây
+EdgesMAs = []  # Tạo LIST EdgesMAs để chưa các biên của MA
+for i in range(len(GetRealEdges(EdgesMA, Fs))):  # Duyệt qua hết các biên của MA
+    # Chia các phần tử cho Fs để đưa vào LIST
+    EdgesMAs.append(GetRealEdges(EdgesMA, Fs)[i]/Fs)
+print("MA: ", EdgesMAs)
+
+EdgesEs = []  # Tạo LIST EdgesMAs để chưa các biên của E
+for i in range(len(GetRealEdges(EdgesE, Fs))):  # Duyệt qua hết các biên của E
+    # Chia các phần tử cho Fs để đưa vào LIST
+    EdgesEs.append(GetRealEdges(EdgesE, Fs)[i]/Fs)
+print("E: ", EdgesEs)
+
+
+EdgesZCRSTEs = []  # Tạo LIST EdgesMAs để chưa các biên của ZCR + STE
+for i in range(len(GetRealEdges(EdgesE_ZCR, Fs))):  # Duyệt qua hết các biên của ZCR + STE
+    # Chia các phần tử cho Fs để đưa vào LIST
+    EdgesZCRSTEs.append(GetRealEdges(EdgesE_ZCR, Fs)[i]/Fs)
+print("ZCR + STE: ", EdgesZCRSTEs)
+# ------------------------------------------------
 
 
 # Hiển thị đồ thị
@@ -217,7 +237,6 @@ plt.subplot(2, 3, 6)
 plt.title("Data (ZCR+STE)")
 plt.plot(data, color="r")
 plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
-
 
 
 plt.show()
