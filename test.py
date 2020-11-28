@@ -39,15 +39,6 @@ def CalculateSTE(Fs, data):  # khoang chia 20ms
                 break
     return E
 
-
-def GetSign(x):
-    if (x> 0):
-        return 1
-    if (x< 0):
-        return -1
-    if (x== 0):
-        return 0
-
 #Hàm tính ZCR
 def CalculateZCR(Fs, data):  # khoang chia 20ms
     dur = len(data) / Fs  # thoi gian tin hieu am thanh
