@@ -107,7 +107,7 @@ def GetEdges(data, threshold):  # Hàm tìm biên tham số vào là data và ng
     for i in range(0, len(res)):    # Cho biến i duyệt qua res
         for k in range(1, 13):  # Cho biến k
             if(res[i] - k > 1 and res[i] + k < len(altData) - 1):
-                if altData[res[i] + k] > 0 and altData[res[i] - k] < 0:
+                if altData[res[i] + k] > 0 and altData[res[i] - k] > 0:
                     temp1.append(res[i])
                     break
 # Tiến hành xóa những biên lỗi đi bằng hàm .remove
@@ -161,7 +161,7 @@ def GetRealEdges(edges, Fs):
 
 # # --------------------------------------------------MAIN------------------------------------------------------
 # đọc file bằng hàm read của scipy
-Fs, data = read('./Resources/TinHieuMau/studio_male.wav')
+Fs, data = read('./Resources/TinHieuMau/studio_female.wav')
 # tính năng lượng ngắn hạn STE
 E = CalculateSTE(Fs, data)
 # chuẩn hóa STE
@@ -207,44 +207,36 @@ print("ZCR + STE: ", EdgesZCRSTEs)
 # Hiển thị đồ thị
 plt.figure()
 
-# # Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
-# plt.subplot(2, 3, 1)
-# plt.plot(MA, color="r")
-# plt.title("MA")
-# plt.vlines(EdgesMA, 0, 1)
-# plt.subplot(2, 3, 4)
-# plt.title("Data (MA)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
+# Đồ thị hiển thị kết quả dùng phương pháp MA và ngưỡng
+plt.subplot(2, 3, 1)
+plt.plot(MA, color="r")
+plt.title("MA")
+plt.vlines(EdgesMA, 0, 1)
+plt.subplot(2, 3, 4)
+plt.title("Data (MA)")
+plt.plot(data, color="r")
+plt.vlines(GetRealEdges(EdgesMA, Fs), -max(data), max(data))
 
-# # Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
-# plt.subplot(2, 3, 2)
-# plt.plot(E, color="r")
-# plt.title("E")
-# plt.vlines(EdgesE, 0, 1)
-# plt.subplot(2, 3, 5)
-# plt.title("Data (STE)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
+# Đồ thị hiển thị kết quả dùng phương pháp STE và ngưỡng
+plt.subplot(2, 3, 2)
+plt.plot(E, color="r")
+plt.title("E")
+plt.vlines(EdgesE, 0, 1)
+plt.subplot(2, 3, 5)
+plt.title("Data (STE)")
+plt.plot(data, color="r")
+plt.vlines(GetRealEdges(EdgesE, Fs), -max(data), max(data))
 
-# # Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
-# plt.subplot(2, 3, 3)
-# plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
-# plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
-# plt.title("STE + ZCR")
-# plt.vlines(EdgesE_ZCR, 0, 1)
-# plt.subplot(2, 3, 6)
-# plt.title("Data (ZCR+STE)")
-# plt.plot(data, color="r")
-# plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
-plt.subplot(2, 1, 1)
+# Đồ thị hiển thị kết quả dùng phương pháp kết hợp STE và ZCR
+plt.subplot(2, 3, 3)
 plt.plot(zcr, color="r")  # đồ thị ZCR có màu đỏ
 plt.plot(E, color="g")  # đồ thị của STE có màu xanh lá cây
 plt.title("STE + ZCR")
 plt.vlines(EdgesE_ZCR, 0, 1)
-plt.subplot(2, 1, 2)
+plt.subplot(2, 3, 6)
 plt.title("Data (ZCR+STE)")
 plt.plot(data, color="r")
 plt.vlines(GetRealEdges(EdgesE_ZCR, Fs), -max(data), max(data))
+
 
 plt.show()
